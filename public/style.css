@@ -1,0 +1,81 @@
+body,html{
+  margin:0;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#myCanvas{
+  width:100%;
+  height: 100vh;
+  margin: 0;
+  overflow:hidden;
+}
+.jc{
+  position:fixed;
+  left:10%;
+  bottom:10%;
+  height:140px;
+  width:140px;
+  border-radius: 50%;
+  opacity: 0.5;
+  background-color: #00feff;
+}
+
+.jb{
+  position: absolute;
+  left:25%;
+  top:25%;
+  height:70px;
+  width:70px;
+  opacity: 0.75;
+  border-radius:50%;
+  background-color:#0000af;
+}
+
+.map {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 1%;
+  top: 1%;
+  height: 180px;
+  border-radius:50%;
+  width: 180px;
+  opacity: 0.5;
+  overflow: hidden;
+  background-image: url("./ground.png");
+  background-repeat: no-repeat;
+  background-size: 250px 250px; 
+  background-position: center; 
+}
+
+
+.run{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position:fixed;
+  left:15%;
+  bottom:30%;
+  height:75px;
+  width:75px;
+  border-radius: 50%;
+  opacity: 0.5;
+  background-color: #00feff;
+}
+
+.jmp{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position:fixed;
+  right:15%;
+  bottom:30%;
+  height:75px;
+  width:75px;
+  border-radius: 50%;
+  opacity: 0.5;
+  background-color: #00feff;
+  
+}
