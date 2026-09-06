@@ -1,7 +1,18 @@
-const CACHE = "world-v2";
+const CACHE = "world-v3";
 
 self.addEventListener("install", (e) => {
   self.skipWaiting();
+  e.waitUntil(
+    caches.open(CACHE).then((cache) =>
+      cache.addAll([
+        "./",
+        "./index.html",
+        "./manifest.json",
+        "./public/grass.jpg",
+        "./public/ground.png"
+      ])
+    )
+  );
 });
 
 self.addEventListener("activate", (e) => {
@@ -13,17 +24,7 @@ self.addEventListener("fetch", (e) => {
 
   e.respondWith(
     caches.match(e.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(e.request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== 'basic') {
-          return response;
-        }
-        const responseToCache = response.clone();
-        caches.open(CACHE).then((cache) => {
-          cache.put(e.request, responseToCache);
-        });
-        return response;
-      });
+      return cached || fetch(e.request);
     })
   );
 });
