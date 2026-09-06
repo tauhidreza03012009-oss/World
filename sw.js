@@ -1,15 +1,7 @@
-const CACHE = "world-v1";
+const CACHE = "world-v2";
 
 self.addEventListener("install", (e) => {
   self.skipWaiting();
-  e.waitUntil(
-    caches.open(CACHE).then((cache) =>
-      cache.addAll([
-        "./index.html",
-        "./manifest.json"
-      ])
-    )
-  );
 });
 
 self.addEventListener("activate", (e) => {
@@ -21,7 +13,17 @@ self.addEventListener("fetch", (e) => {
 
   e.respondWith(
     caches.match(e.request).then((cached) => {
-      return cached || fetch(e.request);
+      if (cached) return cached;
+      return fetch(e.request).then((response) => {
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
+        const responseToCache = response.clone();
+        caches.open(CACHE).then((cache) => {
+          cache.put(e.request, responseToCache);
+        });
+        return response;
+      });
     })
   );
 });
