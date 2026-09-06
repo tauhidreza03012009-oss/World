@@ -15,16 +15,16 @@ import { createInstancedLamps } from "./lamppost.js";
 
 const textureLoader = new THREE.TextureLoader();
 const hp = textureLoader.load('./public/hosp.jpg');
-let bd = new THREE.MeshBasicMaterial({ map: textureLoader.load('public/build.jpg') });
-let mw = new THREE.MeshBasicMaterial({ map: textureLoader.load('public/Mwall.jpg') });
-let multi = new THREE.MeshBasicMaterial({ map: textureLoader.load('public/multi.jpg') });
-let bar = new THREE.MeshBasicMaterial({ map: textureLoader.load('public/bar.jpg') });
-let office = new THREE.MeshBasicMaterial({ map: textureLoader.load('public/office.jpg') });
-let resident = new THREE.MeshBasicMaterial({ map: textureLoader.load('public/resident.jpg') });
-const tin = textureLoader.load('public/tin.jpg');
+let bd = new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/build.jpg') });
+let mw = new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/Mwall.jpg') });
+let multi = new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/multi.jpg') });
+let bar = new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/bar.jpg') });
+let office = new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/office.jpg') });
+let resident = new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/resident.jpg') });
+const tin = textureLoader.load('./public/tin.jpg');
 const norm = new THREE.MeshBasicMaterial({ color: 0x488e84 });
 const flur= new THREE.MeshBasicMaterial({ color: 0x999999 });
-let h=textureLoader.load('public/park.png')
+let h=textureLoader.load('./public/park.png')
 h.center.set(0.5, 0.5);
 h.rotation = -Math.PI / 2;
 const flr = new THREE.MeshBasicMaterial({ map:   h});
@@ -34,12 +34,12 @@ let tn = new THREE.MeshBasicMaterial({ map: tin });
 const fnl = new THREE.MeshStandardMaterial({ map: hp });
 
 const materials = [
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('public/colfr.jpg') }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('public/colbr.jpg') }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('public/colrf.jpg') }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('public/colsd.jpg') }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('public/colsd.jpg') }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('public/colsd.jpg') })
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/colfr.jpg') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/colbr.jpg') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/colrf.jpg') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/colsd.jpg') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/colsd.jpg') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./public/colsd.jpg') })
 ];
 
 function createSeparateBoxes(scene, boxesData, material) {

@@ -8,8 +8,8 @@ export class Ground {
     depth = 1000,
     widthSegments = 128,
     depthSegments = 128,
-    heightmapUrl = 'public/ground.png',
-    textureUrl = 'public/grass.jpg',
+    heightmapUrl = './public/ground.png',
+    textureUrl = './public/grass.jpg',
     displacementScale = 40,
     displacementBias = -10
   } = {}) {
