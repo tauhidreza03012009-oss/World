@@ -8,15 +8,16 @@
   "background_color": "#87CEEB",
   "theme_color": "#87CEEB",
   "orientation": "landscape",
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "public/ground.png",
+      "src": "./public/ground.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "public/ground.png",
+      "src": "./public/ground.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
