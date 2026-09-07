@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { lighting } from "./light.js"
 
 export function initSetup() {
-  const canvas = document.getElementById("myCanvas")
+  const canvas = document.getElementById("myCanvasBox")
   const scene = new THREE.Scene();
   const skyColor = 0x87ceed;
   scene.background = new THREE.Color(skyColor);

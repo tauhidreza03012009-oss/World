@@ -1,12 +1,18 @@
 import { cameraControl } from "../control/camera.js";
+import { token } from "../main.js";
+import { BTN } from "../../constant.js";
 
 export let dist = 5;
 const map = document.createElement("div");
 map.className = "map";
 map.innerHTML = "♦";
+const play = document.getElementById("play");
+const setting = document.getElementById("settings");
+const show = document.getElementById("screen");
+const mine = document.getElementById("myCanvas");
 
 export function createMap() {
-  document.body.appendChild(map);
+  mine.appendChild(map);
 }
 
 export function setMapPosition(x, y, deg) {
@@ -15,37 +21,63 @@ export function setMapPosition(x, y, deg) {
 }
 
 export function runner(camera, player, scene) {
-  const run = document.createElement("div");
-  const jumb = document.createElement("div");
-  const shoot = document.createElement("div");
-  const zoom = document.createElement("div");
-  run.className = "run";
-  run.id = "run";
-  
-  jumb.className = "jmp";
-  shoot.className = "jmp";
-  zoom.className = "run";
-  shoot.style.bottom = "40%";
-  zoom.style.bottom = "40%";
+  // Helper to retrieve existing element or create a new one
+  function getOrCreate(id, className) {
+    let el = document.getElementById(id);
+    if (el) {
+      // Clone element to purge all previously attached event listeners
+      const cleanEl = el.cloneNode(true);
+      el.replaceWith(cleanEl);
+      return cleanEl;
+    }
+    el = document.createElement("div");
+    el.id = id;
+    el.className = className;
+    return el;
+  }
+
+  const run = getOrCreate("run", "run");
+  const jumb = getOrCreate("jump", "run");
+  const shoot = getOrCreate("shoot", "run");
+  const zoom = getOrCreate("zoom", "run");
+  const get = getOrCreate("get", "get");
+
+  get.innerText = "<—";
   run.innerHTML = "RUN";
   jumb.innerHTML = "JUMP";
   shoot.innerHTML = "SHOT";
   zoom.innerHTML = "ZOOM";
 
+  [run, jumb, zoom, shoot].forEach((x) => {
+    let inf = BTN[x.innerHTML];
+
+    x.style.height = `${inf.height}px`;
+    x.style.width = `${inf.width}px`;
+    x.style.bottom = `${inf.bottom}%`;
+    x.style.left = `${inf.left}%`;
+    x.style.opacity = inf.opacity;
+  });
+
+  get.addEventListener("click", () => {
+    show.style.display = "flex";
+    mine.style.display = "none";
+    token();
+  });
+
   zoom.addEventListener("click", () => {
-    dist = (dist == 5) ? 20 : 5;
-    zoom.style.backgroundColor = (dist == 5)?  "#00faff": "#00ffaf";
+    dist = dist === 5 ? 20 : 5;
+    zoom.style.backgroundColor = dist === 5 ? "#00faff" : "#00ffaf";
   });
 
   run.addEventListener("click", () => {
     let k = player.speed.z;
-    player.speed.z = (k == 0.75) ? 0 : 0.75;
-    player.speed.x = (k == 0.75) ? 0 : 0;
-    run.style.backgroundColor = (k == 0.75)?  "#00faff": "#00ffaf";
+    player.speed.z = k === 0.75 ? 0 : 0.75;
+    player.speed.x = k === 0.75 ? 0 : 0;
+    run.style.backgroundColor = k === 0.75 ? "#00faff" : "#00ffaf";
   });
 
   jumb.addEventListener("click", () => {
-    if (player.grounded == true) {
+    if (player.grounded === true) {
       player.speed.y = 0.125;
       player.grounded = false;
     }
@@ -56,8 +88,5 @@ export function runner(camera, player, scene) {
     player.shoot(currentShootTarget);
   });
 
-  document.body.appendChild(run);
-  document.body.appendChild(jumb);
-  document.body.appendChild(shoot);
-  document.body.appendChild(zoom);
+  mine.append(run, jumb, shoot, zoom, get);
 }

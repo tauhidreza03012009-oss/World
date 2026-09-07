@@ -18,11 +18,24 @@
   </script>
 </head>
 <body>
-  <canvas id="myCanvas"></canvas>
+  <div id="screen">
+    <h1>World</h1>
+    <div id="play">PLAY</div>
+    <div id="settings">SETTINGS</div>
+  </div>
+  <div id="setting">
+    <div id="return"><—</div>
+    <div id="hd">SETTINGS</div>
+    <div id="customize">Customize</div>
+    <div id="sensitivity">Sensitivity:  <input id="sense" type="range" min='0.25' max='10.75' value="1" step="0.1"></div>
+    <div id="Zoomsensitivity">Zoom Sensitivity:  <input id="zoomsense" type="range" min='0.25' max='10.75' value="1" step="0.1"></div>
+  </div>
+  <div id="myCanvas" class="myCanvas"><canvas id="myCanvasBox"></canvas></div>
   <script type="module" src="./engine/main.js"></script>
+  <div id="custom" class="myCanvas"></div>
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js");
+ navigator.serviceWorker.register("./sw.j");
 }
 </script>
 </body>
