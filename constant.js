@@ -3,7 +3,14 @@ const defaultBTN = {
   "JUMP": { left: 85, bottom: 30, height: 75, width: 75, opacity: 0.5 },
   "ZOOM": { left: 15, bottom: 40, height: 75, width: 75, opacity: 0.5 },
   "SHOT": { left: 85, bottom: 40, height: 75, width: 75, opacity: 0.5 },
+  "GET": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
+  "OUT": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
+  "BREAK": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
+  "SPEED": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
+  "HORN": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
 };
+
+export let Speed={car:1}
 
 const DefaultSensitivity={
   "NORM":1,

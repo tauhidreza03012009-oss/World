@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocalStorage Controller</title>
+<style>
+body{font-family:Arial;margin:20px}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+th,td{border:1px solid #ddd;padding:8px;text-align:left;vertical-align:top}
+th{background:#f4f4f4}
+button{padding:5px 10px;margin:2px;cursor:pointer}
+.delete{background:#ff4d4d;color:white;border:none;border-radius:4px}
+.edit{background:#2196f3;color:white;border:none;border-radius:4px}
+.save{background:#4caf50;color:white;border:none;border-radius:4px}
+.cancel{background:#777;color:white;border:none;border-radius:4px}
+textarea{width:100%;height:180px;font-family:monospace}
+pre{margin:0;white-space:pre-wrap;word-break:break-word;max-height:120px;overflow:auto}
+.add{display:flex;gap:10px;margin-bottom:15px}
+input{padding:6px}
+</style>
+</head>
+<body>
+
+<h2>LocalStorage Controller</h2>
+
+<div class="add">
+  <input id="newKey" placeholder="Key">
+  <input id="newValue" placeholder="Value">
+  <button onclick="addItem()">Add</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="storageTable"></tbody>
+</table>
+
+<script>
+let editingKey=null;
+
+function renderLocalStorage(){
+  const body=document.getElementById("storageTable");
+  body.innerHTML="";
+
+  if(localStorage.length===0){
+    body.innerHTML="<tr><td colspan='3'>No items</td></tr>";
+    return;
+  }
+
+  for(let i=0;i<localStorage.length;i++){
+    const key=localStorage.key(i);
+    const value=localStorage.getItem(key);
+
+    const row=document.createElement("tr");
+
+    if(editingKey===key){
+      row.innerHTML=`
+      <td><b>${key}</b></td>
+      <td><textarea id="editBox">${value}</textarea></td>
+      <td>
+        <button class="save" onclick="saveEdit('${key}')">Save</button>
+        <button class="cancel" onclick="cancelEdit()">Cancel</button>
+      </td>`;
+    }else{
+      let shown=value;
+      try{
+        shown=JSON.stringify(JSON.parse(value),null,2);
+      }catch(e){}
+      row.innerHTML=`
+      <td><b>${key}</b></td>
+      <td><pre>${shown}</pre></td>
+      <td>
+        <button class="edit" onclick="startEdit('${key}')">Edit</button>
+        <button class="delete" onclick="deleteItem('${key}')">Delete</button>
+      </td>`;
+    }
+
+    body.appendChild(row);
+  }
+}
+
+function startEdit(key){
+  editingKey=key;
+  renderLocalStorage();
+}
+
+function cancelEdit(){
+  editingKey=null;
+  renderLocalStorage();
+}
+
+function saveEdit(key){
+  const txt=document.getElementById("editBox").value;
+
+  try{
+    JSON.parse(txt);
+    localStorage.setItem(key,txt);
+  }catch(e){
+    if(confirm("Invalid JSON. Save as plain text instead?")){
+      localStorage.setItem(key,txt);
+    }else{
+      return;
+    }
+  }
+
+  editingKey=null;
+  renderLocalStorage();
+}
+
+function deleteItem(key){
+  localStorage.removeItem(key);
+  renderLocalStorage();
+}
+
+function addItem(){
+  const key=document.getElementById("newKey").value.trim();
+  const value=document.getElementById("newValue").value;
+
+  if(!key)return;
+
+  localStorage.setItem(key,value);
+  document.getElementById("newKey").value="";
+  document.getElementById("newValue").value="";
+  renderLocalStorage();
+}
+
+renderLocalStorage();
+</script>
+
+</body>
+</html>

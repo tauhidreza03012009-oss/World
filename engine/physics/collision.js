@@ -13,7 +13,7 @@ const rotation = new THREE.Quaternion();
 const translation = new THREE.Vector3();
 const pureRotationMatrix = new THREE.Matrix4();
 
-export function getCollidingObject(entity, objects, stepTolerance = 0.3) {
+export function getCollidingObject(entity, objects, stepTolerance = 0.3, ignoreInstanceId = null) {
   if (!entity || !Array.isArray(objects) || objects.length === 0) return null;
 
   const targetEntity = (entity.isGroup && entity.children.length > 0) ? entity.children[0] : entity;
@@ -32,10 +32,17 @@ export function getCollidingObject(entity, objects, stepTolerance = 0.3) {
       item.updateWorldMatrix(true, false);
 
       for (let instanceIdx = 0; instanceIdx < item.count; instanceIdx++) {
+        if (ignoreInstanceId !== null && ignoreInstanceId !== undefined && instanceIdx === ignoreInstanceId) {
+          continue;
+        }
+
         item.getMatrixAt(instanceIdx, instanceMatrix);
         worldMatrix.multiplyMatrices(item.matrixWorld, instanceMatrix);
 
         worldMatrix.decompose(translation, rotation, scale);
+        
+        if (scale.x < 0.001 || scale.y < 0.001 || scale.z < 0.001) continue;
+
         pureRotationMatrix.makeRotationFromQuaternion(rotation);
 
         itemOBB.center.copy(center).applyMatrix4(worldMatrix);

@@ -94,7 +94,7 @@ function ensureSinglePointerMesh(camera, scene) {
 export function cameraControl(camera, player, scene, distance = 5) {
   ensureSinglePointerMesh(camera, scene);
 
-  const lookAtY = player.position.y + 1.2;
+  const lookAtY =(player.driving)? player.position.y + 6:player.position.y + 2;
 
   if (!isInitialized) {
     currentTarget.x = player.position.x;

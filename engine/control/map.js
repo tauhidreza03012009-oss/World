@@ -5,7 +5,7 @@ import { BTN } from "../../constant.js";
 export let dist = 5;
 const map = document.createElement("div");
 map.className = "map";
-map.innerHTML = "♦";
+map.innerHTML = " ♠ ";
 const play = document.getElementById("play");
 const setting = document.getElementById("settings");
 const show = document.getElementById("screen");
@@ -21,11 +21,9 @@ export function setMapPosition(x, y, deg) {
 }
 
 export function runner(camera, player, scene) {
-  // Helper to retrieve existing element or create a new one
   function getOrCreate(id, className) {
     let el = document.getElementById(id);
     if (el) {
-      // Clone element to purge all previously attached event listeners
       const cleanEl = el.cloneNode(true);
       el.replaceWith(cleanEl);
       return cleanEl;
@@ -40,6 +38,7 @@ export function runner(camera, player, scene) {
   const jumb = getOrCreate("jump", "run");
   const shoot = getOrCreate("shoot", "run");
   const zoom = getOrCreate("zoom", "run");
+  const geton = getOrCreate("geton", "run");
   const get = getOrCreate("get", "get");
 
   get.innerText = "<—";
@@ -47,8 +46,10 @@ export function runner(camera, player, scene) {
   jumb.innerHTML = "JUMP";
   shoot.innerHTML = "SHOT";
   zoom.innerHTML = "ZOOM";
+  geton.innerHTML = "GET";
+  
 
-  [run, jumb, zoom, shoot].forEach((x) => {
+  [run, jumb, zoom, shoot,geton].forEach((x) => {
     let inf = BTN[x.innerHTML];
 
     x.style.height = `${inf.height}px`;
@@ -63,7 +64,7 @@ export function runner(camera, player, scene) {
     mine.style.display = "none";
     token();
   });
-
+  
   zoom.addEventListener("click", () => {
     dist = dist === 5 ? 20 : 5;
     zoom.style.backgroundColor = dist === 5 ? "#00faff" : "#00ffaf";
@@ -87,6 +88,8 @@ export function runner(camera, player, scene) {
     const currentShootTarget = cameraControl(camera, player, scene);
     player.shoot(currentShootTarget);
   });
+  geton.style.display = "none"
+  mine.append(run, jumb, shoot, zoom, get, geton);
 
-  mine.append(run, jumb, shoot, zoom, get);
+  return [run, jumb, shoot, zoom, geton]
 }

@@ -26,6 +26,7 @@ export let gravity = null
 export let animationFrameId = null
 
 play.addEventListener("click", () => {
+  
   show.style.display = "none"
   mine.style.display = "block"
   start()

@@ -12,6 +12,7 @@ import { Bridge } from "./bridge.js";
 import { createInstancedTrees } from "./tree.js";
 import { createInstancedFences } from "./fence.js";
 import { createInstancedLamps } from "./lamppost.js";
+import { createInstancedCarsFromGLTF } from "./car.js";
 
 const textureLoader = new THREE.TextureLoader();
 const hp = textureLoader.load('./public/hosp.jpg');
@@ -27,8 +28,7 @@ const flur= new THREE.MeshBasicMaterial({ color: 0x999999 });
 let h=textureLoader.load('./public/park.png')
 h.center.set(0.5, 0.5);
 h.rotation = -Math.PI / 2;
-const flr = new THREE.MeshBasicMaterial({ map:   h});
-
+const flr = new THREE.MeshBasicMaterial({ map: h});
 
 let tn = new THREE.MeshBasicMaterial({ map: tin });
 const fnl = new THREE.MeshStandardMaterial({ map: hp });
@@ -96,7 +96,6 @@ export function createWorld(scene) {
   world.office = createSeparateBoxes(scene, offbox, office);
   const normbox2 = [
     { pos: [155, 9.525, -110], size: [75, 0.6, 105] },
-    
   ];
 
   world.normal2 = createSeparateBoxes(scene, normbox2, flr);
@@ -106,14 +105,16 @@ export function createWorld(scene) {
     { pos: [120, 9.525, -160], size: [0.4, 20, 0.1] },
     { pos: [190, 9.525, -160], size: [0.4, 20, 0.1] },
     { pos: [190, 9.525, -58], size: [0.4, 20, 0.1] },
-    
+    { pos: [155, 9.525, -47], size: [66, 5, 0.5] },
+    { pos: [155, 9.525, 19], size: [66, 5, 0.5] },
+    { pos: [188, 9.525, -14], size: [0.5, 5, 66] },
+    { pos: [122, 9.525, -14], size: [0.5, 5, 66] },
   ];
 
   world.normal3 = createSeparateBoxes(scene, normbox3, flur);
 
   const resbox = [
     { pos: [20, 10, 15], size: [40, 20, 30] },
-    
   ];
 
   world.resident = createSeparateBoxes(scene, resbox, resident);
@@ -124,6 +125,24 @@ export function createWorld(scene) {
   ];
 
   world.multi = createSeparateBoxes(scene, mixbox, multi);
+  
+  const carPositions = [
+    { x: 150, y: 10, z: -125, rotation: Math.PI / 2 },
+    { x: 150, y: 10, z: -135, rotation: Math.PI / 2 },
+    { x: 150, y: 10, z: -70, rotation: Math.PI / 2 },
+    { x: 150, y: 10, z: -80, rotation: Math.PI / 2 },
+    { x: 150, y: 10, z: -90, rotation: Math.PI / 2 }
+  ];
+
+  const carColors = [
+    0xff0000,
+    0x00ff00,
+    0x0000ff,
+    0xffff00
+  ];
+
+  world.car = createInstancedCarsFromGLTF(scene, carPositions, carColors);
+
   const normbox = [
     { pos: [120.5, 0, 224], size: [1, 50, 1] },
     { pos: [115, 50, 224], size: [11, 0.5, 1] },
@@ -252,11 +271,11 @@ export function createWorld(scene) {
     { x: -31, y: 9.2, z: 47 },
     { x: 51, y: 6, z: 418 },
     { x: 62, y: 10.5, z: 385 },
-    { x: 82, y: 23, z:183 },
-    { x: 73, y: 13.6, z:390 },
-    { x:10.6, y: 9.2, z: 386 },
-    { x:70, y: 9.5, z: 367 },
-    { x:14 , y: 9.2, z: 382 },
+    { x: 82, y: 23, z: 183 },
+    { x: 73, y: 13.6, z: 390 },
+    { x: 10.6, y: 9.2, z: 386 },
+    { x: 70, y: 9.5, z: 367 },
+    { x: 14, y: 9.2, z: 382 },
     { x: 16, y: 9.2, z: 341 },
     { x: 22, y: 9.2, z: 384 },
     { x: -8.5, y: 9.5, z: -12 },
@@ -267,13 +286,13 @@ export function createWorld(scene) {
     { x: -75, y: 9.5, z: -31 },
     { x: -75, y: 9.5, z: -60 },
     { x: -65.5, y: 9.5, z: -37.5 },
-    { x: -92, y: 9.5, z: -61},
-    { x: -43, y: 9.5, z: -62},
-    { x: -34, y: 9.5, z: -60},
-    { x: -22, y: 9.5, z: -62},
-    { x: -6, y: 9.5, z: -80},
-    { x: -7, y: 9.5, z: -90},
-    { x: -6.5, y: 9.5, z: -100},
+    { x: -92, y: 9.5, z: -61 },
+    { x: -43, y: 9.5, z: -62 },
+    { x: -34, y: 9.5, z: -60 },
+    { x: -22, y: 9.5, z: -62 },
+    { x: -6, y: 9.5, z: -80 },
+    { x: -7, y: 9.5, z: -90 },
+    { x: -6.5, y: 9.5, z: -100 },
     { x: -7.5, y: 9.5, z: -34.47 },
     { x: -23.65, y: 9.5, z: -36 },
     { x: -39.6, y: 9.5, z: -43.5 },
@@ -281,7 +300,6 @@ export function createWorld(scene) {
   ];
   world.bushMesh = bushes(scene, bushPositions);
 
-  
   const fencePositions = [
     { x: -70, y: 9.2, z: 35, rt: 0 },
     { x: -80, y: 9.2, z: 35, rt: 0 },
@@ -401,11 +419,12 @@ export function createWorld(scene) {
   world.tower = Tower(scene);
   world.bridge = Bridge(scene);
   world.jumper = jumper(scene, world.ground, 6, 410);
-  world.room = Room(scene, world.ground, 13, 410,Math.PI);
+  world.room = Room(scene, world.ground, 13, 410, Math.PI);
   world.room1 = Room(scene, world.ground, -13, 410);
   world.room2 = Room(scene, world.ground, 15, 370);
 
   world.chair = Chair(scene, world.ground, 0, 0);
   world.cont = Cont(scene, world.ground, 0, 410);
+
   return world;
 }

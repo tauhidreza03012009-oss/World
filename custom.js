@@ -15,6 +15,11 @@ export function customWindow(btn) {
   const zoom = document.createElement("div");
   const get = document.createElement("div");
   const box = document.createElement("div");
+  const geton = document.createElement("div");
+  const get1 = document.createElement("div");
+  const get2 = document.createElement("div");
+  const get3 = document.createElement("div");
+  const get4 = document.createElement("div");
 
   run.className = "run";
   run.id = "run";
@@ -23,14 +28,24 @@ export function customWindow(btn) {
   jumb.className = "run";
   shoot.className = "run";
   zoom.className = "run";
+  geton.className = "run";
+  get1.className = "run";
+  get2.className = "run";
+  get3.className = "run";
+  get4.className = "run";
   box.className="bx"
 
   run.innerHTML = "RUN";
   jumb.innerHTML = "JUMP";
   shoot.innerHTML = "SHOT";
   zoom.innerHTML = "ZOOM";
+  geton.innerHTML = "GET";
+  get1.innerHTML = "OUT";
+  get2.innerHTML = "SPEED";
+  get3.innerHTML = "HORN";
+  get4.innerHTML = "BREAK";
 
-  [run, jumb, zoom, shoot].forEach((x) => {
+  [run, jumb, zoom, shoot,geton,get1,get2,get3,get4].forEach((x) => {
     let inf = BTN[x.innerHTML];
 
     x.style.position = "absolute";
@@ -57,7 +72,7 @@ export function customWindow(btn) {
     mine.style.display = "none";
   });
 
-  mine.append(run, jumb, shoot, zoom, get,box);
+  mine.append(run, jumb, shoot, zoom, get,box,geton,get1,get2,get3,get4);
 }
 
 function touchStart(e, btn) {
