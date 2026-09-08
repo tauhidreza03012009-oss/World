@@ -16,7 +16,7 @@ export function createMap() {
 }
 
 export function setMapPosition(x, y, deg) {
-  map.style.backgroundPosition = `${x - 40}px ${y - 50}px`;
+  map.style.backgroundPosition = `${x - 1160}px ${y - 1160}px`;
   map.style.transform = `rotate(${-deg * 180 / Math.PI}deg)`;
 }
 

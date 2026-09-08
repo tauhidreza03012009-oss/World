@@ -9,12 +9,21 @@ export const places = [
     district: "Downtown"
   },
   {
+    id: "parking",
+    name: "PARKING",
+    x: 115,
+    y: 9,
+    z: -110,
+    size: { x: 70, y: 6, z: 100 },
+    district: "Downtown"
+  },
+  {
     id: "bridge",
     name: "East Bridge",
-    x: 210,
-    y: 12,
-    z: 95,
-    size: { x: 120, y: 20, z: 18 },
+    x: 115,
+    y: 9,
+    z: 224,
+    size: { x: 10, y: 20, z: 120 },
     district: "River"
   }
 ];

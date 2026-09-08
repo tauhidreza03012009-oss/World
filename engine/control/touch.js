@@ -4,6 +4,7 @@ import { createMap, runner } from "./map.js";
 import { rider } from "./vehicle.js";
 import { Sensitivity, Speed } from "../../constant.js";
 import { getClickedObjectOnUp } from './reycast.js';
+import { moveSingleCar } from '../world/car.js'
 
 let btnst = null;
 const movement = {};
@@ -135,11 +136,16 @@ export function initControls(player, camera, scene, object) {
         btnst.forEach(x => x.style.display = "none");
         bt.forEach(x => x.style.display = "flex");
         bt[4].style.display = "none";
-
+        moveSingleCar(
+        player.resolvedCarMeshes,
+        player.vehicle,
+        new THREE.Vector3(player.position.x, player.position.y-0.5, player.position.z),
+        player.rotation.y
+        );
         player.setDriving(false, null);
         btns[1].style.display = "block";
         player.position.y += 3;
-
+   
         activeCarPos = null;
         activeInstanceId = null;
       });

@@ -299,7 +299,7 @@ export class Player {
     this.rotation.x = Math.max(-this.maxPitch, Math.min(maxUpAngle, this.rotation.x));
 
     this.mesh.rotation.y = this.rotation.y;
-    setMapPosition(-this.mesh.position.x / 4, -this.mesh.position.z / 4, this.rotation.y);
+    setMapPosition(-this.mesh.position.x *5/ 2, -this.mesh.position.z *10/ 4, this.rotation.y);
 
     if (this.vehicle !== null && this.vehicle !== undefined && this.resolvedCarMeshes) {
       moveSingleCar(
