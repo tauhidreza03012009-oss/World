@@ -4,10 +4,10 @@ import { createMap, runner } from "./map.js";
 import { rider } from "./vehicle.js";
 import { Sensitivity, Speed } from "../../constant.js";
 import { getClickedObjectOnUp } from './reycast.js';
-import { moveSingleCar } from '../world/car.js'
-import { writeInBoard } from '../world/MissionBoard.js'
-import { data } from "../../Info/yourself.js"
-import { mission } from "../../mission/manager.js"
+import { moveSingleCar } from '../world/car.js';
+import { writeInBoard } from '../world/MissionBoard.js';
+import { data } from "../../Info/yourself.js";
+import { mission } from "../../mission/manager.js";
 
 let btnst = null;
 const movement = {};
@@ -15,14 +15,13 @@ const movement = {};
 export function initControls(player, camera, scene, object) {
   createMap();
   let bt = runner(camera, player, scene);
-  let btn1= document.getElementById("div1")
-  let btn2= document.getElementById("div2")
+  let btn1 = document.getElementById("div1");
+  let btn2 = document.getElementById("div2");
   const viewPort = document.getElementById("myCanvas");
   const sense = document.getElementById("sense");
   const zoomsense = document.getElementById("zoomsense");
   const talk = document.getElementById("talker");
   const spch = document.getElementById("speech");
-  const opts = document.getElementById("options");
 
   let activeCarPos = null;
   let activeInstanceId = null;
@@ -48,9 +47,7 @@ export function initControls(player, camera, scene, object) {
   function jsStart(e) {
     e.stopPropagation();
     e.preventDefault();
-    
     btns[1].setPointerCapture(e.pointerId);
-    
     movement[e.pointerId] = {
       sx: e.clientX,
       sy: e.clientY,
@@ -70,7 +67,8 @@ export function initControls(player, camera, scene, object) {
     if (!activeCarPos || player.driving) return;
     const distance = player.mesh.position.distanceTo(activeCarPos);
     if (distance > 7) {
-      bt[4].style.display = "none";
+      const getonBtn = document.getElementById("geton");
+      if (getonBtn) getonBtn.style.display = "none";
       activeCarPos = null;
       activeInstanceId = null;
     }
@@ -135,28 +133,41 @@ export function initControls(player, camera, scene, object) {
     player.setDriving(true, activeInstanceId);
 
     btns[1].style.display = "none";
-    bt.forEach(x => x.style.display = "none");
+    
+    ["run", "jump", "shoot", "zoom", "geton"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "none";
+    });
 
     if (!btnst) {
       btnst = rider(camera, player, scene);
       btnst[0].addEventListener("click", (e) => {
         const isMission = e.currentTarget.dataset.fromMission === "true";
+        
         btnst.forEach(x => x.style.display = "none");
-        bt.forEach(x => x.style.display = "flex");
-        bt[4].style.display = "none";
-        if(!isMission){
-        moveSingleCar(
-        player.resolvedCarMeshes,
-        player.vehicle,
-        new THREE.Vector3(player.position.x, player.position.y-0.5, player.position.z),
-        player.rotation.y
-        );
-        player.position.y += 3;
+
+        ["run", "jump", "shoot", "zoom"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = "flex";
+        });
+
+        const getonBtn = document.getElementById("geton");
+        if (getonBtn) getonBtn.style.display = "none";
+
+        if (!isMission) {
+          moveSingleCar(
+            player.resolvedCarMeshes,
+            player.vehicle,
+            new THREE.Vector3(player.position.x, player.position.y - 0.5, player.position.z),
+            player.rotation.y
+          );
+          player.position.y += 3;
         }
+        
         player.setDriving(false, null);
         btns[1].style.display = "block";
-        player.speed.x=0
-        player.speed.z=0
+        player.speed.x = 0;
+        player.speed.z = 0;
         activeCarPos = null;
         activeInstanceId = null;
         e.currentTarget.dataset.fromMission = "false";
@@ -177,36 +188,23 @@ export function initControls(player, camera, scene, object) {
     let hit = clickedObj.object;
     const objectName = hit.name || clickedObj.object.name;
 
-
-
-    
     if (objectName === "BOARD" && clickedObj.distance < 7) {
-      
-      
-      if(player.conversation){
+      if (player.conversation) {
         return;
-      }
-      else{
-        
-        let missionname=mission()
-        if(missionname){
-          talk.style.display="flex"
-        player.conversation=true
-        player.mission=missionname
-        player.mission.step(talk,spch,btn2,btn1,player)
-        
-        writeInBoard(`Hello ${data.name}, today's missions :`)
-        }
-        else{
-          writeInBoard("No mission available, today")
+      } else {
+        let missionname = mission();
+        if (missionname) {
+          talk.style.display = "flex";
+          player.conversation = true;
+          player.mission = missionname;
+          player.mission.step(talk, spch, btn2, btn1, player);
+          writeInBoard(`Hello ${data.name}, today's missions :`);
+        } else {
+          writeInBoard("No mission available, today");
         }
       }
     }
 
-
-
-
-    
     if (objectName === "Car" && clickedObj.distance < 7) {
       const instancedMesh = clickedObj.object;
       const instanceId = clickedObj.instanceId;
@@ -219,7 +217,8 @@ export function initControls(player, camera, scene, object) {
 
       activeCarPos = position;
       activeInstanceId = instanceId;
-      bt[4].style.display = "flex";
+      const getonBtn = document.getElementById("geton");
+      if (getonBtn) getonBtn.style.display = "flex";
     }
   });
 
