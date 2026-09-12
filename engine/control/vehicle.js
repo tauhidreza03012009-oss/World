@@ -33,7 +33,7 @@ export function rider(camera, player, scene) {
     let inf = BTN[x.innerHTML];
     let k=(x.className=="sq")?0.5:1;
     x.style.height = `${inf.height}px`;
-    x.style.width = `${inf.width*k}px`;
+    x.style.width = `${inf.width}px`;
     x.style.bottom = `${inf.bottom}%`;
     x.style.left = `${inf.left}%`;
     x.style.opacity = inf.opacity;
