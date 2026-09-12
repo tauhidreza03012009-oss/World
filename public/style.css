@@ -26,8 +26,8 @@ body,html{
   position:fixed;
   left:10%;
   bottom:10%;
-  height:140px;
-  width:140px;
+  height:23vmin;
+  width:23vmin;
   border-radius: 50%;
   opacity: 0.5;
   background-color: #00feff;
@@ -37,8 +37,8 @@ body,html{
   position: absolute;
   left:25%;
   top:25%;
-  height:70px;
-  width:70px;
+  height:50%;
+  width:50%;
   opacity: 0.75;
   border-radius:50%;
   background-color:#0000af;
@@ -51,9 +51,9 @@ body,html{
   position: fixed;
   left: 1%;
   top: 1%;
-  height: 180px;
+  height: 30vmin;
   border-radius:50%;
-  width: 180px;
+  width: 30vmin;
   opacity: 0.75;
   overflow: hidden;
   background-image: url("./mark.png");
@@ -91,21 +91,21 @@ body,html{
 }
 
 #return{
-    display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   position:fixed;
   left:0%;
   top:0%;
-  height:60px;
-  width:60px;
+  height:10%;
+  width:10%;
   border-radius: 0;
   background-color:#aaccdd;
 }
 
 #hd{
   width:100%;
-  height:60px;
+  height:10vmin;
   background-color:green;
   font-size: 20px;
   display: flex;
@@ -116,10 +116,10 @@ body,html{
 
 .bx{
   position: fixed;
-left:4%;
+  left:4%;
   top:0%;
   width:96%;
-  height: 100px;
+  height:16.4vmin;
   opacity:0.5;
   background-color:#5dd55d;
   display:flex;

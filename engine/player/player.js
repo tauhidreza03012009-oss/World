@@ -379,7 +379,8 @@ export class Player {
 
   shoot(targetPoint) {
     if (!targetPoint) return;
-
+    console.log("Viewport Width: " + window.innerWidth + "px");
+console.log("Viewport Height: " + window.innerHeight + "px");
     const origin = new THREE.Vector3(this.position.x, this.position.y + 0.7, this.position.z);
     this.shootTarget.copy(targetPoint);
     this.shotDirection.subVectors(this.shootTarget, origin).normalize();
