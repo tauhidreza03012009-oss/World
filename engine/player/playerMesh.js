@@ -16,7 +16,7 @@ export function playerMesh(scene) {
   scene.add(player)
 
   const loader = new GLTFLoader()
-  loader.load('/public/player.glb', (gltf) => {
+  loader.load('./public/player.glb', (gltf) => {
     const model = gltf.scene
     
     model.scale.set(0.5, 0.5, 0.5)
