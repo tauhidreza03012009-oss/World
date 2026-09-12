@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { playerMesh } from "./playerMesh.js";
+import { playerMesh,playAnimation,updatePlayerAnimation } from "./playerMesh.js";
 import { setMapPosition } from "../control/map.js";
 import { getCollidingObject } from "../physics/collision.js";
 import { moveSingleCar } from "../world/car.js";
@@ -30,8 +30,8 @@ export class Player {
   constructor({
     scene = null,
     object = null,
-    position = { x: 160.0, y: 245, z: -90 },
-    size = { w: 0.5, h: 1.1, l: 0.5 }
+    position = { x: 130.0, y: 13, z: -120 },
+    size = { w: 0.5, h: 1, l: 0.5 }
   } = {}) {
     this.moveSpeed = 7.5;
     this.maxPitch = Math.PI / 3;
@@ -39,12 +39,18 @@ export class Player {
     this.object = object;
     this.position = position;
     this.scene = scene;
-
+    this.jmpAnim=false
     this.scene.add(shot);
-
-    this.mesh = playerMesh(scene);
+    this.colliding=false;
+    this.mesh = playerMesh(scene)
+    this.currentAnimation="Man_Idle"
     this.mesh.position.set(position.x, position.y, position.z);
     this.mesh.castShadow = true;
+
+    const carBoxGeo = new THREE.BoxGeometry(2.0, 1.0, 4.2);
+    const carBoxMat = new THREE.MeshBasicMaterial({ visible: false });
+    this.carCollider = new THREE.Mesh(carBoxGeo, carBoxMat);
+    this.scene.add(this.carCollider);
 
     this.speed = { x: 0, y: 0, z: 0 };
     this.power = 100;
@@ -107,7 +113,7 @@ export class Player {
   isPlayerMesh(obj) {
     let current = obj;
     while (current) {
-      if (current === this.mesh) return true;
+      if (current === this.mesh || current === this.carCollider) return true;
       current = current.parent;
     }
     return false;
@@ -139,6 +145,7 @@ export class Player {
           child.name !== "TREE" &&
           child.name !== "Bushes" &&
           child.name !== "T" &&
+          child.name !== "G" &&
           child.name !== "CUSTOM_WIRE"
         ) {
           obstacleCache.push(child);
@@ -160,6 +167,8 @@ export class Player {
 
     let moveX = 0;
     let moveZ = 0;
+    let xch=false
+    let zch=false
 
     if (this.driving) {
       spd.x = 0;
@@ -176,12 +185,23 @@ export class Player {
     }
 
     const pos = this.position;
-    const hitTolerance = this.driving ? 1.2 : 0.3;
+    const activeMesh = this.driving ? this.carCollider : this.mesh;
+    const hitTolerance = this.driving ? 0.8 : 0.3;
     const ignoreInstance = this.driving ? this.vehicle : null;
 
     pos.x += moveX;
-    this.mesh.position.x = pos.x;
-    let xHit = getCollidingObject(this.mesh, obstacleCache, hitTolerance, ignoreInstance);
+
+    if (this.driving) {
+      this.carCollider.position.set(pos.x, pos.y + 0.3, pos.z);
+      this.carCollider.rotation.y = yaw;
+      this.carCollider.updateMatrixWorld(true);
+    } else {
+      this.mesh.position.x = pos.x;
+      this.mesh.rotation.y = yaw;
+      this.mesh.updateMatrixWorld(true);
+    }
+    xch=true;
+    let xHit = getCollidingObject(activeMesh, obstacleCache, hitTolerance, ignoreInstance);
     if (xHit) {
       if (xHit.name === "mvabl") {
         let y = returner(pos.x, pos.z);
@@ -197,13 +217,32 @@ export class Player {
         this.speed.y = 0.34;
       } else {
         pos.x -= moveX;
-        if (this.driving) Speed.car = 0;
+        if (this.driving) {
+          this.carCollider.position.x = pos.x;
+          this.carCollider.updateMatrixWorld(true);
+          Speed.car = 0;
+          this.colliding=true
+          xch=false
+        } else {
+          this.mesh.position.x = pos.x;
+          this.mesh.updateMatrixWorld(true);
+        }
       }
     }
 
     pos.z += moveZ;
-    this.mesh.position.z = pos.z;
-    let zHit = getCollidingObject(this.mesh, obstacleCache, hitTolerance, ignoreInstance);
+    zch=true
+    if (this.driving) {
+      this.carCollider.position.set(pos.x, pos.y + 0.3, pos.z);
+      this.carCollider.rotation.y = yaw;
+      this.carCollider.updateMatrixWorld(true);
+    } else {
+      this.mesh.position.z = pos.z;
+      this.mesh.rotation.y = yaw;
+      this.mesh.updateMatrixWorld(true);
+    }
+
+    let zHit = getCollidingObject(activeMesh, obstacleCache, hitTolerance, ignoreInstance);
     if (zHit) {
       if (zHit.name === "mvabl") {
         let y = returner(pos.x, pos.z);
@@ -219,13 +258,23 @@ export class Player {
         this.speed.y = 0.34;
       } else {
         pos.z -= moveZ;
-        if (this.driving) Speed.car = 0;
+        if (this.driving) {
+          this.carCollider.position.z = pos.z;
+          this.carCollider.updateMatrixWorld(true);
+          Speed.car = 0;
+          zch=false
+          this.colliding=true;
+        } else {
+          this.mesh.position.z = pos.z;
+          this.mesh.updateMatrixWorld(true);
+        }
       }
     }
-
+    if(xch && zch)this.colliding=false;
     if (!this.grounded) {
       pos.y += spd.y;
       this.mesh.position.y = pos.y;
+      this.mesh.updateMatrixWorld(true);
       const yHit = getCollidingObject(this.mesh, obstacleCache, 0.0, ignoreInstance);
       if (yHit) {
         if (yHit.name === "TIRE") {
@@ -272,6 +321,7 @@ export class Player {
           this.speed.y = 0;
           this.grounded = true;
           this.jmp = false;
+          this.jum = false;
         } else {
           this.grounded = false;
         }
@@ -281,6 +331,14 @@ export class Player {
     }
 
     this.mesh.position.set(pos.x, pos.y, pos.z);
+    this.mesh.rotation.y = this.rotation.y;
+    this.mesh.updateMatrixWorld(true);
+    
+    if (this.driving) {
+      this.carCollider.position.set(pos.x, pos.y + 0.3, pos.z);
+      this.carCollider.rotation.y = this.rotation.y;
+      this.carCollider.updateMatrixWorld(true);
+    }
 
     const lookAtY = this.vehicle !== null ? pos.y + 12 : pos.y + 6;
     const distance = 7.5;
@@ -298,9 +356,17 @@ export class Player {
 
     this.rotation.x = Math.max(-this.maxPitch, Math.min(maxUpAngle, this.rotation.x));
 
-    this.mesh.rotation.y = this.rotation.y;
-    setMapPosition(-this.mesh.position.x *5/ 2, -this.mesh.position.z *10/ 4, this.rotation.y);
-
+    setMapPosition(-this.mesh.position.x * 5 / 2, -this.mesh.position.z * 10 / 4, this.rotation.y);
+    
+    if(this.speed.x||this.speed.z){
+      if(this.jum){playAnimation(this.currentAnimation,"Man_RunningJump");this.currentAnimation="Man_RunningJump"}
+      else {playAnimation(this.currentAnimation,"Man_Run");this.currentAnimation="Man_Run"}
+    }
+    else{
+        if(this.jum){playAnimation(this.currentAnimation,"Man_Jump");this.currentAnimation="Man_Jump"}
+        else {playAnimation(this.currentAnimation,"Man_Idle");this.currentAnimation="Man_Idle"}
+    }
+    updatePlayerAnimation(this.mesh.mixer)
     if (this.vehicle !== null && this.vehicle !== undefined && this.resolvedCarMeshes) {
       moveSingleCar(
         this.resolvedCarMeshes,
@@ -320,5 +386,6 @@ export class Player {
     shot.position.copy(origin);
     shot.visible = true;
     this.shooting = true;
+    console.log(this.position.x, this.position.z);
   }
 }

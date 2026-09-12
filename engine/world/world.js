@@ -7,12 +7,14 @@ import { Room } from "./room.js";
 import { Chair } from "./chair.js";
 import { jumper } from "./jumper.js";
 import { Cont } from "./cont.js";
+import { NPC } from "./class.js";
 import { bushes } from "./bush.js";
 import { Bridge } from "./bridge.js";
 import { createInstancedTrees } from "./tree.js";
 import { createInstancedFences } from "./fence.js";
 import { createInstancedLamps } from "./lamppost.js";
 import { createInstancedCarsFromGLTF } from "./car.js";
+import { whiteboard, writeInBoard  } from "./MissionBoard.js";
 
 const textureLoader = new THREE.TextureLoader();
 const hp = textureLoader.load('./public/hosp.jpg');
@@ -70,6 +72,8 @@ export function createWorld(scene) {
     { pos: [-70, 10, -20], size: [50, 20, 10] },
     { pos: [-80, 10, 20], size: [30, 20, 10] }
   ];
+  world.board=whiteboard(scene)
+  writeInBoard("HELLO WORLD !")
   world.fnlHospital = createSeparateBoxes(scene, fnlBoxes, fnl);
 
   const collegeBox = [
@@ -131,12 +135,14 @@ export function createWorld(scene) {
     { x: 150, y: 10, z: -135, rotation: Math.PI / 2 },
     { x: 150, y: 10, z: -70, rotation: Math.PI / 2 },
     { x: 150, y: 10, z: -80, rotation: Math.PI / 2 },
+    { x: 150, y: 1000, z: -145, rotation: Math.PI / 2 },
     { x: 150, y: 10, z: -90, rotation: Math.PI / 2 }
   ];
 
   const carColors = [
     0xff0000,
     0x00ff00,
+    0x0000ff,
     0x0000ff,
     0xffff00
   ];
@@ -414,6 +420,10 @@ export function createWorld(scene) {
     { x: 24, y: 9.2, z: 326 },
     { x: 5.5, y: 9.2, z: 339 },
   ];
+  const npcData=[
+    {scene:scene,name:"Charles",job:"Inspector",id:1000}
+  ]
+  world.npc = npcData.map(data => new NPC(data));
   world.lampMeshes = createInstancedLamps(scene, lampPositions);
 
   world.tower = Tower(scene);

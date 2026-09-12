@@ -5,9 +5,9 @@ const defaultBTN = {
   "SHOT": { left: 85, bottom: 40, height: 75, width: 75, opacity: 0.5 },
   "GET": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
   "OUT": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
-  "BREAK": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
-  "SPEED": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
-  "HORN": { left: 85, bottom: 60, height: 75, width: 75, opacity: 0.5 },
+  "BREAK": { left: 5, bottom: 6, height: 75, width: 75, opacity: 0.5 },
+  "SPEED": { left: 85, bottom: 6, height: 75, width: 75, opacity: 0.5 },
+  "HORN": { left: 85, bottom: 50, height: 75, width: 75, opacity: 0.5 },
 };
 
 export let Speed={car:1}

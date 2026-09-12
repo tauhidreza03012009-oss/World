@@ -17,8 +17,8 @@ export function rider(camera, player, scene) {
   }
 
   const run = getOrCreate("out", "run");
-  const jumb = getOrCreate("break", "run");
-  const shoot = getOrCreate("speed", "run");
+  const jumb = getOrCreate("break", "sq");
+  const shoot = getOrCreate("speed", "sq");
   const zoom = getOrCreate("horn", "run");
   
 
@@ -31,9 +31,9 @@ export function rider(camera, player, scene) {
 
   [run, jumb, zoom, shoot].forEach((x) => {
     let inf = BTN[x.innerHTML];
-
+    let k=(x.className=="sq")?0.5:1;
     x.style.height = `${inf.height}px`;
-    x.style.width = `${inf.width}px`;
+    x.style.width = `${inf.width*k}px`;
     x.style.bottom = `${inf.bottom}%`;
     x.style.left = `${inf.left}%`;
     x.style.opacity = inf.opacity;
@@ -48,14 +48,42 @@ export function rider(camera, player, scene) {
     
   });
 
-  jumb.addEventListener("click", () => {
-    Speed.car=Math.min(50,Math.max(-20,Speed.car-2))
-  });
+  let accelInterval = null;
 
-  shoot.addEventListener("click", () => {
-    Speed.car=Math.min(50,Math.max(-20,Speed.car+2))
-    console.log(Speed)
-  });
+function startAcceleration(changeAmount) {
+  stopAcceleration();
+  const updateSpeed = () => {
+    Speed.car = Math.min(50, Math.max(-20, Speed.car + changeAmount));
+    accelInterval = requestAnimationFrame(updateSpeed);
+  };
+  updateSpeed();
+}
+
+function stopAcceleration() {
+  if (accelInterval) {
+    cancelAnimationFrame(accelInterval);
+    accelInterval = null;
+  }
+}
+
+jumb.addEventListener("pointerdown", (e) => {
+  e.preventDefault();
+  startAcceleration(-0.5);
+});
+
+jumb.addEventListener("pointerup", stopAcceleration);
+jumb.addEventListener("pointerleave", stopAcceleration);
+jumb.addEventListener("pointercancel", stopAcceleration);
+
+shoot.addEventListener("pointerdown", (e) => {
+  e.preventDefault();
+  startAcceleration(0.5);
+});
+
+shoot.addEventListener("pointerup", stopAcceleration);
+shoot.addEventListener("pointerleave", stopAcceleration);
+shoot.addEventListener("pointercancel", stopAcceleration);
+
   geton.style.display = "none"
   mine.append(run, jumb, shoot, zoom, get, geton);
 

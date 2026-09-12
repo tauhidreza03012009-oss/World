@@ -30,9 +30,9 @@ export function customWindow(btn) {
   zoom.className = "run";
   geton.className = "run";
   get1.className = "run";
-  get2.className = "run";
+  get2.className = "sq";
   get3.className = "run";
-  get4.className = "run";
+  get4.className = "sq";
   box.className="bx"
 
   run.innerHTML = "RUN";
@@ -44,13 +44,13 @@ export function customWindow(btn) {
   get2.innerHTML = "SPEED";
   get3.innerHTML = "HORN";
   get4.innerHTML = "BREAK";
-
+  
   [run, jumb, zoom, shoot,geton,get1,get2,get3,get4].forEach((x) => {
     let inf = BTN[x.innerHTML];
-
+    let k=(x.className=="sq")?0.5:1;
     x.style.position = "absolute";
     x.style.height = `${inf.height}px`;
-    x.style.width = `${inf.width}px`;
+    x.style.width = `${inf.width*k}px`;
     x.style.bottom = `${inf.bottom}%`;
     x.style.left = `${inf.left}%`;
     x.style.opacity = inf.opacity;
@@ -123,10 +123,11 @@ function showSelect(x){
   let turn =document.getElementById("volume")
   turn.addEventListener("input",(e)=>{
     let num= e.target.value
+    let wn=(selected.className=="sq")?num*0.5:num
     BTN[selected.innerHTML].height=num
-    BTN[selected.innerHTML].width=num
+    BTN[selected.innerHTML].width=wn;
     selected.style.height = `${num}px`;
-    selected.style.width = `${num}px`;
+    selected.style.width = `${wn}px`;
   })
   let turn2 =document.getElementById("volume2")
   turn2.addEventListener("input",(e)=>{

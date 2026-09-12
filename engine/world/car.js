@@ -35,16 +35,14 @@ export async function createInstancedCarsFromGLTF(scene, transforms, color = 0xd
       const material = child.material.clone();
       const instancedMesh = new THREE.InstancedMesh(child.geometry, material, count);
       
-      // Store initial scale so updates don't shrink sub-meshes
-      instancedMesh.userData.initialScale = transforms[0]?.scale ?? 0.1;
+      instancedMesh.userData.initialScale = transforms[0]?.scale ?? 0.075;
 
-      // Fix frustum culling inside the mesh creation loop
       instancedMesh.frustumCulled = false;
 
       transforms.forEach((transform, i) => {
         dummy.position.set(transform.x, transform.y, transform.z);
         dummy.rotation.y = transform.rotation || 0;
-        const currentScale = transform.scale ?? 0.1;
+        const currentScale = transform.scale ?? 0.075;
         dummy.scale.set(currentScale, currentScale, currentScale);
         dummy.updateMatrix();
 
@@ -84,7 +82,7 @@ export function moveSingleCar(instancedMeshes, indexToMove, newPosition, newRota
   if (Array.isArray(instancedMeshes)) {
     instancedMeshes.forEach((mesh) => {
       if (mesh && mesh.isInstancedMesh) {
-        const meshScale = scale ?? mesh.userData.initialScale ?? 0.1;
+        const meshScale = scale ?? mesh.userData.initialScale ?? 0.075;
 
         dummy.position.copy(newPosition);
         dummy.rotation.set(0, newRotation, 0);

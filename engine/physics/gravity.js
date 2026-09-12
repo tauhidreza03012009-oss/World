@@ -1,6 +1,6 @@
 export class Gravity {
   constructor({
-    dir = { x: 0, y: -0.005, z: 0 },
+    dir = { x: 0, y: -0.01, z: 0 },
     object = null
   } = {}) {
     this.value = dir;
@@ -19,6 +19,7 @@ export class Gravity {
       obj.grounded = true;
       if(obj.jmp){obj.speed.z=0;obj.speed.x=0}
       obj.jmp = false;
+      obj.jum = false;
     } else {
         spd.y += this.value.y;
     }

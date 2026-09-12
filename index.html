@@ -18,24 +18,77 @@
   </script>
 </head>
 <body>
+  <div id="reward">
+    <div id="rewpoi"></div>
+    <div id="accept">Accept</div>
+  </div>
   <div id="screen">
     <h1>World</h1>
     <div id="play">PLAY</div>
     <div id="settings">SETTINGS</div>
+    <div id="account">ACCOUNT</div>
   </div>
+  <div id="accountshow">
+  <div id="returnAc">&larr;</div>
+  <div id="info">
+    <div id="pic"></div>
+    <div id="inf">
+      <div id="title">PLAYER HUD</div>
+      
+      <div id="name">
+        <p id="NameLabel">CALLSIGN</p>
+        <input id="namebox" type="text" value="Tauhid" placeholder="Enter name...">
+        <div id="namesave">SAVE</div>
+      </div>
+      <div id="currencies">
+        <div id="money">
+          <p id="moneyLabel">CREDITS</p>
+          <div id="moneyno"></div>
+        </div>
+        <div id="gems">
+          <p id="gemsLabel">GEMS</p>
+          <div id="gemsno">&#9670; 120</div>
+        </div>
+      </div>
+      <div id="level">
+        <p id="levelLabel">RANK LEVEL</p>
+        <div id="levelno">LVL 01</div>
+      </div>
+      
+      <div id="experience">
+        <p id="experienceLabel">EXP</p>
+        <div id="experienceno">100 / 500</div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <div id="setting">
     <div id="return"><—</div>
     <div id="hd">SETTINGS</div>
     <div id="customize">Customize</div>
-    <div id="sensitivity">Sensitivity:  <input id="sense" type="range" min='0.1' max='3.75' value="0.4" step="0.1"></div>
+    <div id="sensitivity">Sensitivity:  <input id="sense" type="range" min='0.05' max='3.75' value="0.4" step="0.1"></div>
     <div id="Zoomsensitivity">Zoom Sensitivity:  <input id="zoomsense" type="range" min='0.25' max='10.75' value="1" step="0.1"></div>
   </div>
   <div id="myCanvas" class="myCanvas"><canvas id="myCanvasBox"></canvas></div>
   <script type="module" src="./engine/main.js"></script>
   <div id="custom" class="myCanvas"></div>
+  <div id="talker">
+    <div id="speech"></div>
+    <div id="options">
+      <div id="div1">jii</div>
+      <div id="div2">huhhu</div>
+    </div>
+  </div>
+
+  <div id="counter">
+      <div id="instact">
+      </div>
+    <div id="count"></div>
+</div>
 <script>
 if ("serviceWorker" in navigator) {
- navigator.serviceWorker.register("./sw.j");
+ navigator.serviceWorker.register("./sw.js");
 }
 </script>
 </body>

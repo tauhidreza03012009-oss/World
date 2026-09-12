@@ -1,0 +1,15 @@
+//======================LEVEL DATA==================//
+
+export const levelInfo=[
+ 1000,2500,4500,7000,10000,13500,17500,22000,27000,32500,38500,45000,52000,59500,67500,76000,85000,94500,104500
+]
+
+export const levelToStage=[
+  "AMETURE","AMETURE","AMETURE","AMETURE",
+  "SUSPECT","SUSPECT","SUSPECT","SUSPECT",
+  "ENEMY","ENEMY","ENEMY","ENEMY",
+  "COME BACK","COME BACK","COME BACK","COME BACK",
+  "HERO"
+]
+
+  

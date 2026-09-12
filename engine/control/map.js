@@ -4,7 +4,24 @@ import { BTN } from "../../constant.js";
 
 export let dist = 5;
 const map = document.createElement("div");
+const mapShow = document.createElement("div");
+mapShow.style.display="none"
+const cross = document.createElement("div");
+const pos = document.createElement("div");
+pos.innerHTML="♦"
+pos.style.position="absolute"
+cross.className="get"
+cross.innerHTML="x"
+cross.addEventListener("click",()=>{
+  mapShow.style.display="none"
+})
+map.addEventListener("click",()=>{
+  mapShow.style.display="flex"
+})
+mapShow.appendChild(cross)
+mapShow.appendChild(pos)
 map.className = "map";
+mapShow.className = "maps";
 map.innerHTML = " ♠ ";
 const play = document.getElementById("play");
 const setting = document.getElementById("settings");
@@ -13,11 +30,14 @@ const mine = document.getElementById("myCanvas");
 
 export function createMap() {
   mine.appendChild(map);
+  mine.appendChild(mapShow);
 }
 
 export function setMapPosition(x, y, deg) {
   map.style.backgroundPosition = `${x - 1160}px ${y - 1160}px`;
   map.style.transform = `rotate(${-deg * 180 / Math.PI}deg)`;
+  pos.style.top= `${-y/25+50}%`
+  pos.style.left= `${-x/25+50}%`
 }
 
 export function runner(camera, player, scene) {
@@ -42,6 +62,10 @@ export function runner(camera, player, scene) {
   const get = getOrCreate("get", "get");
 
   get.innerText = "<—";
+  get.innerText = "<—";
+  get.style.position = "absolute";
+  get.style.top = "0";
+  get.style.left = "0";
   run.innerHTML = "RUN";
   jumb.innerHTML = "JUMP";
   shoot.innerHTML = "SHOT";
@@ -81,6 +105,7 @@ export function runner(camera, player, scene) {
     if (player.grounded === true) {
       player.speed.y = 0.125;
       player.grounded = false;
+      player.jum=true;
     }
   });
 
@@ -89,6 +114,7 @@ export function runner(camera, player, scene) {
     player.shoot(currentShootTarget);
   });
   geton.style.display = "none"
+  console.log(get)
   mine.append(run, jumb, shoot, zoom, get, geton);
 
   return [run, jumb, shoot, zoom, geton]
